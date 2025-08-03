@@ -72,6 +72,10 @@
       text-align: center;
       margin-top: 1rem;
     }
+    .pdf-link {
+      text-align: center;
+      margin-top: 1rem;
+    }
   </style>
 </head>
 <body>
@@ -83,12 +87,12 @@
   <div class="container">
     <div class="input-area">
       <label for="mainDish">What are you making (or craving)?</label><br>
-      <input type="text" id="mainDish" placeholder="e.g. Lasagna, Chicken Parmesan, Tofu Stir Fry" />
+      <input type="text" id="mainDish" placeholder="e.g. Lasagna, Chicken Parmesan, Tofu Stir Fry, Grilled Salmon, Biryani" />
       <br>
-      <button onclick="generateMenus()">Generate My Menus</button>
+      <button onclick="generateMenu()">Generate My Menu</button>
     </div>
 
-    <div id="menus"></div>
+    <div id="menu"></div>
   </div>
 
   <footer>
@@ -96,50 +100,79 @@
   </footer>
 
   <script>
-    const menuSuggestions = {
-      "lasagna": [
-        { name: "Garlic Bread", url: "https://www.allrecipes.com/recipe/21060/toasted-garlic-bread/" },
-        { name: "Caesar Salad", url: "https://www.allrecipes.com/recipe/229063/classic-restaurant-caesar-salad/" }
-      ],
-      "chicken parmesan": [
-        { name: "Spaghetti Aglio e Olio", url: "https://www.allrecipes.com/recipe/222000/spaghetti-aglio-e-olio/" },
-        { name: "Italian Roasted Vegetables", url: "https://www.allrecipes.com/recipe/214931/roasted-vegetables/" }
-      ],
-      "tofu stir fry": [
-        { name: "Steamed Jasmine Rice", url: "https://www.allrecipes.com/recipe/262856/jasmine-rice/" },
-        { name: "Asian Cucumber Salad", url: "https://www.allrecipes.com/recipe/222106/asian-cucumber-salad/" }
-      ],
-      "default": [
-        { name: "Simple Green Salad", url: "https://www.allrecipes.com/recipe/14469/jamies-cranberry-spinach-salad/" },
-        { name: "Roasted Potatoes", url: "https://www.allrecipes.com/recipe/220520/roasted-red-potatoes/" }
-      ]
+    const dishDatabase = {
+      "lasagna": {
+        appetizers: [
+          { name: "Bruschetta", url: "https://www.simplyrecipes.com/recipes/bruschetta_with_tomato_and_basil/" },
+          { name: "Stuffed Mushrooms", url: "https://www.delish.com/cooking/recipe-ideas/a19665918/easy-stuffed-mushrooms-recipe/" }
+        ],
+        sides: [
+          { name: "Caesar Salad", url: "https://www.allrecipes.com/recipe/229063/classic-restaurant-caesar-salad/" },
+          { name: "Garlic Bread", url: "https://www.allrecipes.com/recipe/21060/toasted-garlic-bread/" }
+        ],
+        wine: "Chianti",
+        cocktail: "Negroni",
+        dessert: { name: "Tiramisu", url: "https://www.allrecipes.com/recipe/21412/tiramisu-ii/" },
+        theme: "Rustic Italian Night",
+        playlist: { name: "La Dolce Vita", song: "Volare – Dean Martin" },
+        icebreaker: "What’s the most unforgettable meal you’ve ever had?",
+        pdf: "https://example.com/menus/lasagna.pdf"
+      },
+      "default": {
+        appetizers: [
+          { name: "Deviled Eggs", url: "https://www.simplyrecipes.com/recipes/deviled_eggs/" },
+          { name: "Caprese Skewers", url: "https://www.loveandlemons.com/caprese-skewers/" }
+        ],
+        sides: [
+          { name: "Roasted Veggies", url: "https://www.loveandlemons.com/roasted-vegetables/" },
+          { name: "Wild Rice Pilaf", url: "https://www.allrecipes.com/recipe/222006/wild-rice-pilaf/" }
+        ],
+        wine: "Pinot Noir",
+        cocktail: "Moscow Mule",
+        dessert: { name: "Chocolate Lava Cake", url: "https://sallysbakingaddiction.com/molten-chocolate-lava-cakes/" },
+        theme: "Cozy Night In",
+        playlist: { name: "Mellow Dinner Vibes", song: "Banana Pancakes – Jack Johnson" },
+        icebreaker: "If you could share a meal with any historical figure, who would it be?",
+        pdf: "https://example.com/menus/default.pdf"
+      }
     };
 
-    function generateMenus() {
+    function generateMenu() {
       const input = document.getElementById("mainDish").value.trim().toLowerCase();
-      const container = document.getElementById("menus");
+      const container = document.getElementById("menu");
       container.innerHTML = "";
 
-      let suggestions = menuSuggestions[input] || menuSuggestions["default"];
+      let data = dishDatabase[input] || dishDatabase["default"];
 
-      for (let i = 0; i < 3; i++) {
-        const section = document.createElement("div");
-        section.className = "menu-output";
+      const section = document.createElement("div");
+      section.className = "menu-output";
 
-        section.innerHTML = `
-          <h2>🍽️ Menu Option ${i + 1}</h2>
-          <p><strong>Main Dish:</strong> ${input || "Mystery Dish"}</p>
-          <p><strong>Suggested Sides:</strong></p>
-          <ul>
-            ${suggestions.map(side => `<li><a href="${side.url}" target="_blank">${side.name}</a></li>`).join("")}
-          </ul>
-          <div class="try-again">
-            <button onclick="generateMenus()">Try Again</button>
-          </div>
-        `;
+      section.innerHTML = `
+        <h2>🍽️ Your Gourmeet Menu</h2>
+        <p><strong>Main Dish:</strong> ${input || "Mystery Dish"}</p>
+        <p><strong>Theme:</strong> ${data.theme}</p>
+        <p><strong>Appetizers:</strong></p>
+        <ul>
+          ${data.appetizers.map(item => `<li><a href="${item.url}" target="_blank">${item.name}</a></li>`).join('')}
+        </ul>
+        <p><strong>Sides:</strong></p>
+        <ul>
+          ${data.sides.map(item => `<li><a href="${item.url}" target="_blank">${item.name}</a></li>`).join('')}
+        </ul>
+        <p><strong>Wine Pairing:</strong> ${data.wine}</p>
+        <p><strong>Cocktail Pairing:</strong> ${data.cocktail}</p>
+        <p><strong>Dessert:</strong> <a href="${data.dessert.url}" target="_blank">${data.dessert.name}</a></p>
+        <p><strong>Playlist Vibe:</strong> ${data.playlist.name} — song suggestion: "${data.playlist.song}"</p>
+        <p><strong>Icebreaker Question:</strong> ${data.icebreaker}</p>
+        <div class="pdf-link">
+          <a href="${data.pdf}" target="_blank">📄 Download Printable Menu (Instagram-ready)</a>
+        </div>
+        <div class="try-again">
+          <button onclick="generateMenu()">Try Again</button>
+        </div>
+      `;
 
-        container.appendChild(section);
-      }
+      container.appendChild(section);
     }
   </script>
 </body>
