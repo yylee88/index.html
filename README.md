@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gourmeet | Menu Pairing Made Beautiful</title>
   <style>
     body {
@@ -95,12 +95,12 @@
 <body>
   <header>
     <h1>Gourmeet</h1>
-    <p>Modern menus, curated by taste</p>
+    <p>Your main dish has met its match</p>
   </header>
 
   <div class="container">
     <div class="input-area">
-      <label for="mainDish">What's your anchor dish or craving?</label><br>
+      <label for="mainDish">What are you making?</label><br>
       <input type="text" id="mainDish" placeholder="e.g. crispy tofu, roasted duck, spicy noodles" />
       <br>
       <button onclick="generateMenu()">Curate My Menu</button>
@@ -115,54 +115,96 @@
 
   <script>
     function generateMenu() {
-      const input = document.getElementById("mainDish").value.trim();
+      const input = document.getElementById("mainDish").value.trim().toLowerCase();
       const container = document.getElementById("menu");
       container.innerHTML = "";
 
       if (!input) return;
 
-      const menu = {
-        main: input,
-        mainLink: "https://www.google.com/search?q=" + encodeURIComponent(input + " recipe"),
-        appetizers: [
-          { name: "Pickled turnips with mustard seed", url: "https://www.seriouseats.com/pickled-turnips-recipe" },
-          { name: "Crispy shallots on labneh", url: "https://www.bonappetit.com/recipe/labneh-with-quick-pickles-and-crispy-shallots" }
-        ],
-        sides: [
-          { name: "Spiced lentils with preserved lemon", url: "https://www.nytimes.com/recipe/1021980/spiced-lentils" },
-          { name: "Charred broccolini with anchovy oil", url: "https://www.epicurious.com/recipes/food/views/charred-broccolini-with-anchovy-dressing" }
-        ],
-        wine: "A chilled Gamay with high acid",
-        cocktail: "Basil-cilantro mezcal margarita",
-        dessert: { name: "Olive oil cake with fennel pollen", url: "https://www.loveandlemons.com/olive-oil-cake/" },
-        theme: "Studio dinner in a converted print shop",
-        song: "Fade to Grey – Visage",
-        songLink: "https://open.spotify.com/track/4tkgz64N2fddIsCgd5Z0us",
-        icebreaker: "What food trend would you bring back or cancel forever?",
-        pdf: "https://example.com/menu-curated.pdf"
-      };
+      // Curate menu details based on keywords in the dish
+      let theme = "";
+      let wine = "";
+      let cocktail = "";
+      let playlist = "";
+      let song = "";
+      let wildcard = "";
+      let appetizers = [];
+      let sides = [];
+      let dessert = {};
 
+      if (input.includes("tofu") || input.includes("noodle")) {
+        theme = "K-town nostalgia with Brooklyn playlists";
+        wine = "Orange pét-nat";
+        cocktail = "Yuzu spritz with Korean pear";
+        playlist = "Leftfield Korean disco + weird TikTok beats";
+        song = "Bubble Pop! – HyunA";
+        appetizers = [
+          { name: "Kimchi deviled eggs", url: "https://www.bonappetit.com/recipe/kimchi-deviled-eggs" },
+          { name: "Crispy rice with spicy tuna", url: "https://www.delish.com/cooking/recipe-ideas/a35874134/spicy-tuna-crispy-rice-recipe/" }
+        ];
+        sides = [
+          { name: "Scallion pancakes with soy drizzle", url: "https://thewoksoflife.com/chinese-scallion-pancakes-cong-you-bing/" },
+          { name: "Charred shishitos with lemon salt", url: "https://www.loveandlemons.com/shishito-peppers/" }
+        ];
+        dessert = { name: "Miso caramel brownies", url: "https://www.bonappetit.com/recipe/miso-caramel-brownies" };
+        wildcard = "Bonus: everyone gets a mini tube of spicy gochujang lip gloss as a party favor.";
+      } else if (input.includes("duck") || input.includes("pork")) {
+        theme = "A smoky dinner in your best outfit (even if barefoot)";
+        wine = "Funky chilled Beaujolais";
+        cocktail = "Smoked mezcal + fig bitters";
+        playlist = "Vinyl-only dinner with obscure ‘70s post-funk";
+        song = "Les Fleur – Minnie Riperton";
+        appetizers = [
+          { name: "Pickled fennel and fig toast", url: "https://www.thekitchn.com/recipe-fig-and-fennel-crostini-173963" },
+          { name: "Duck liver mousse on rye crisps", url: "https://www.seriouseats.com/duck-liver-mousse-crostini-recipe" }
+        ];
+        sides = [
+          { name: "Roasted beet salad with hazelnut", url: "https://www.bonappetit.com/recipe/beets-with-pistachios-and-orange" },
+          { name: "Spiced roasted squash", url: "https://www.loveandlemons.com/roasted-squash/" }
+        ];
+        dessert = { name: "Dark chocolate tart with sea salt", url: "https://www.bonappetit.com/recipe/salted-dark-chocolate-tart" };
+        wildcard = "Someone at the table must perform a dramatic reading of a Yelp review from 2011.";
+      } else {
+        theme = "Accidental supper club in a living room with too many plants";
+        wine = "Chenin blanc, slightly off-dry";
+        cocktail = "Grapefruit rosemary gin fizz";
+        playlist = "Soft synths, jazz breaks, and random Sade remixes";
+        song = "Smooth Operator – Sade";
+        appetizers = [
+          { name: "Marinated white beans with lemon zest", url: "https://www.loveandlemons.com/marinated-white-beans/" },
+          { name: "Crackers with whipped feta & aleppo pepper", url: "https://www.bonappetit.com/recipe/whipped-feta-with-sesame-and-sumac" }
+        ];
+        sides = [
+          { name: "Crispy smashed potatoes with labneh", url: "https://www.bonappetit.com/recipe/smashed-potatoes-with-labneh-and-crunchy-garlic" },
+          { name: "Blistered green beans with anchovy butter", url: "https://www.seriouseats.com/charred-green-beans-with-anchovy-dressing" }
+        ];
+        dessert = { name: "Cardamom olive oil cake", url: "https://www.themediterraneandish.com/olive-oil-cake/" };
+        wildcard = "Include one dish that must be eaten with your hands — no explanation allowed.";
+      }
+
+      const mainLink = `https://www.google.com/search?q=${encodeURIComponent(input + " recipe")}`;
       const section = document.createElement("div");
       section.className = "menu-output";
 
       section.innerHTML = `
-        <h2><a href="${menu.mainLink}" target="_blank">${menu.main}</a></h2>
-        <p><strong>Theme:</strong> ${menu.theme}</p>
+        <h2><a href="${mainLink}" target="_blank">${input}</a></h2>
+        <p><strong>Theme:</strong> ${theme}</p>
         <p><strong>Appetizers:</strong></p>
         <ul>
-          ${menu.appetizers.map(item => `<li><a href="${item.url}" target="_blank">${item.name}</a></li>`).join('')}
+          ${appetizers.map(item => `<li><a href="${item.url}" target="_blank">${item.name}</a></li>`).join('')}
         </ul>
         <p><strong>Sides:</strong></p>
         <ul>
-          ${menu.sides.map(item => `<li><a href="${item.url}" target="_blank">${item.name}</a></li>`).join('')}
+          ${sides.map(item => `<li><a href="${item.url}" target="_blank">${item.name}</a></li>`).join('')}
         </ul>
-        <p><strong>Wine:</strong> ${menu.wine}</p>
-        <p><strong>Cocktail:</strong> ${menu.cocktail}</p>
-        <p><strong>Dessert:</strong> <a href="${menu.dessert.url}" target="_blank">${menu.dessert.name}</a></p>
-        <p><strong>Song Pairing:</strong> <a href="${menu.songLink}" target="_blank">${menu.song}</a></p>
-        <p><strong>Icebreaker:</strong> ${menu.icebreaker}</p>
+        <p><strong>Wine:</strong> ${wine}</p>
+        <p><strong>Cocktail:</strong> ${cocktail}</p>
+        <p><strong>Dessert:</strong> <a href="${dessert.url}" target="_blank">${dessert.name}</a></p>
+        <p><strong>Song Pairing:</strong> <a href="https://open.spotify.com/search/${encodeURIComponent(song)}" target="_blank">${song}</a></p>
+        <p><strong>Icebreaker:</strong> ${"What’s your most chaotic food habit or ritual?"}</p>
+        <p><strong>Wildcard:</strong> ${wildcard}</p>
         <div class="pdf-link">
-          <a href="${menu.pdf}" target="_blank">📄 Download Printable Menu</a>
+          <a href="#" onclick="window.print()">📄 Print Menu</a>
         </div>
         <div class="try-again">
           <button onclick="generateMenu()">Try Again</button>
