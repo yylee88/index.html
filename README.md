@@ -1,17 +1,16 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gourmeet | Menu Pairing Made Simple</title>
+  <title>Gourmeet | Menu Pairing Made Beautiful</title>
   <style>
     body {
       font-family: 'Helvetica Neue', sans-serif;
       margin: 0;
       padding: 0;
       background: #f4f4f4;
-      color: #333;
+      color: #222;
     }
     header {
       background: #fff;
@@ -20,16 +19,16 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
     header h1 {
-      font-size: 3rem;
-      margin-bottom: 0.5rem;
-      color: #2c2c2c;
+      font-size: 2.8rem;
+      margin-bottom: 0.3rem;
+      color: #1a1a1a;
     }
     header p {
-      font-size: 1.2rem;
-      color: #777;
+      font-size: 1rem;
+      color: #666;
     }
     .container {
-      max-width: 900px;
+      max-width: 700px;
       margin: 2rem auto;
       padding: 1rem;
       background: #fff;
@@ -52,7 +51,7 @@
       margin-top: 1rem;
       padding: 0.8rem 1.5rem;
       font-size: 1rem;
-      background-color: #ff5722;
+      background-color: #111;
       color: #fff;
       border: none;
       border-radius: 6px;
@@ -60,24 +59,26 @@
       transition: background 0.3s ease;
     }
     button:hover {
-      background-color: #e64a19;
-    }
-    .menu-output img {
-      width: 100%;
-      max-height: 200px;
-      object-fit: cover;
-      border-radius: 6px;
-      margin-bottom: 1rem;
+      background-color: #444;
     }
     .menu-output h2 {
-      margin-top: 0;
+      font-size: 2rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+    .menu-output ul {
+      list-style: none;
+      padding-left: 1rem;
+    }
+    .menu-output ul li {
+      margin-bottom: 0.5rem;
     }
     .pdf-link, .try-again {
       text-align: center;
       margin-top: 1.5rem;
     }
     .pdf-link a {
-      background: #333;
+      background: #000;
       color: #fff;
       padding: 0.6rem 1.2rem;
       border-radius: 5px;
@@ -94,112 +95,91 @@
 <body>
   <header>
     <h1>Gourmeet</h1>
-    <p>✨ Your main dish just met its match ✨</p>
+    <p>Modern menus, curated by taste</p>
   </header>
 
   <div class="container">
     <div class="input-area">
-      <label for="mainDish">What's the main dish?</label><br>
-      <input type="text" id="mainDish" placeholder="e.g. Lasagna, Salmon, Biryani, Veggie Tacos" />
+      <label for="mainDish">What's your anchor dish or craving?</label><br>
+      <input type="text" id="mainDish" placeholder="e.g. crispy tofu, roasted duck, spicy noodles" />
       <br>
-      <button onclick="generateMenu()">Generate Menu</button>
+      <button onclick="generateMenu()">Curate My Menu</button>
     </div>
 
     <div id="menu"></div>
   </div>
 
   <footer>
-    &copy; 2025 Gourmeet. All rights reserved.
+    &copy; 2025 Gourmeet. All menus born of appetite, culture & chaos.
   </footer>
 
   <script>
-    const dishDatabase = {
-      "lasagna": {
-        image: "https://source.unsplash.com/800x400/?lasagna",
-        appetizers: [
-          { name: "Bruschetta", url: "https://www.simplyrecipes.com/recipes/bruschetta_with_tomato_and_basil/" },
-          { name: "Stuffed Mushrooms", url: "https://www.delish.com/cooking/recipe-ideas/a19665918/easy-stuffed-mushrooms-recipe/" }
-        ],
-        sides: [
-          { name: "Caesar Salad", url: "https://www.allrecipes.com/recipe/229063/classic-restaurant-caesar-salad/" },
-          { name: "Garlic Bread", url: "https://www.allrecipes.com/recipe/21060/toasted-garlic-bread/" }
-        ],
-        wine: "Chianti",
-        cocktail: "Negroni",
-        dessert: { name: "Tiramisu", url: "https://www.allrecipes.com/recipe/21412/tiramisu-ii/" },
-        theme: "Rustic Italian Night",
-        playlist: { name: "La Dolce Vita", song: "Volare – Dean Martin" },
-        icebreaker: "What’s the most unforgettable meal you’ve ever had?",
-        pdf: "https://example.com/menus/lasagna.pdf"
+    const menus = [
+      {
+        main: "Whole Cambodian-style fish with lemongrass & lime",
+        appetizers: ["Cured radish with chili oil drizzle", "Charred okra skewers with smoked salt"],
+        sides: ["Sticky coconut rice", "Pickled papaya & shallot salad"],
+        wine: "Skin-contact Riesling from Finger Lakes",
+        cocktail: "Makrut gimlet on crushed ice",
+        dessert: "Salted palm sugar flan",
+        theme: "Back-alley market meets art gallery",
+        playlist: "Obscure disco edits from São Paulo + a rogue Addison Rae track",
+        song: "Do You Wanna Funk – Sylvester",
+        icebreaker: "What’s the weirdest meal you’ve ever loved more than you expected?",
+        pdf: "https://example.com/menu-cambodian-fish.pdf"
       },
-      "salmon": {
-        image: "https://source.unsplash.com/800x400/?grilled-salmon",
-        appetizers: [
-          { name: "Smoked Salmon Dip", url: "https://www.simplyrecipes.com/recipes/smoked_salmon_dip/" },
-          { name: "Cucumber Canapés", url: "https://www.loveandlemons.com/cucumber-appetizers/" }
-        ],
-        sides: [
-          { name: "Roasted Asparagus", url: "https://www.loveandlemons.com/roasted-asparagus/" },
-          { name: "Herbed Quinoa", url: "https://www.allrecipes.com/recipe/229156/herbed-quinoa/" }
-        ],
-        wine: "Sauvignon Blanc",
-        cocktail: "French 75",
-        dessert: { name: "Lemon Tart", url: "https://www.delish.com/uk/cooking/recipes/a31073634/easy-lemon-tart-recipe/" },
-        theme: "Seaside Bistro",
-        playlist: { name: "Chill Coastal", song: "Come Away With Me – Norah Jones" },
-        icebreaker: "What's your go-to comfort dish when you're sad or sick?",
-        pdf: "https://example.com/menus/salmon.pdf"
+      {
+        main: "Crispy smashed fingerlings with chili crisp & labneh",
+        appetizers: ["Marinated Castelvetrano olives with fennel pollen", "Spoonfuls of lemony whipped ricotta"],
+        sides: ["Charred cabbage with anchovy vinaigrette", "Crunchy Persian cucumber salad"],
+        wine: "Chilled red from Sicily",
+        cocktail: "Shiso mezcal sour",
+        dessert: "Burnt honey semifreddo",
+        theme: "Natural wine & no shoes",
+        playlist: "Japanese city pop and minimal techno",
+        song: "Plastic Love – Mariya Takeuchi",
+        icebreaker: "What’s one food hill you’d die on (like cilantro is trash)?",
+        pdf: "https://example.com/menu-smashed-fingerlings.pdf"
       },
-      "default": {
-        image: "https://source.unsplash.com/800x400/?dinner",
-        appetizers: [
-          { name: "Deviled Eggs", url: "https://www.simplyrecipes.com/recipes/deviled_eggs/" },
-          { name: "Caprese Skewers", url: "https://www.loveandlemons.com/caprese-skewers/" }
-        ],
-        sides: [
-          { name: "Roasted Veggies", url: "https://www.loveandlemons.com/roasted-vegetables/" },
-          { name: "Wild Rice Pilaf", url: "https://www.allrecipes.com/recipe/222006/wild-rice-pilaf/" }
-        ],
-        wine: "Pinot Noir",
-        cocktail: "Moscow Mule",
-        dessert: { name: "Chocolate Lava Cake", url: "https://sallysbakingaddiction.com/molten-chocolate-lava-cakes/" },
-        theme: "Cozy Night In",
-        playlist: { name: "Mellow Dinner Vibes", song: "Banana Pancakes – Jack Johnson" },
-        icebreaker: "If you could share a meal with any historical figure, who would it be?",
-        pdf: "https://example.com/menus/default.pdf"
+      {
+        main: "Korean soy-braised short ribs (galbi jjim)",
+        appetizers: ["Shredded scallion pancakes", "Soy-pickled quail eggs"],
+        sides: ["Jujube & daikon broth", "Charred shishitos with sesame oil"],
+        wine: "Light Burgundy or Lambrusco",
+        cocktail: "Black sesame old fashioned",
+        dessert: "Hojicha panna cotta",
+        theme: "Concrete floors, warm light, someone brought incense",
+        playlist: "K-indie deep cuts meets '90s house",
+        song: "Everybody Be Somebody – Ruffneck",
+        icebreaker: "If your soul had a signature dish, what would it be?",
+        pdf: "https://example.com/menu-galbi.pdf"
       }
-    };
+    ];
 
     function generateMenu() {
-      const input = document.getElementById("mainDish").value.trim().toLowerCase();
+      const input = document.getElementById("mainDish").value.trim();
       const container = document.getElementById("menu");
       container.innerHTML = "";
 
-      let data = dishDatabase[input] || dishDatabase["default"];
+      const menu = menus[Math.floor(Math.random() * menus.length)];
 
       const section = document.createElement("div");
       section.className = "menu-output";
 
       section.innerHTML = `
-        <img src="${data.image}" alt="Dish Image" />
-        <h2>🍽️ Your Gourmeet Menu</h2>
-        <p><strong>Main Dish:</strong> ${input || "Mystery Dish"}</p>
-        <p><strong>Theme:</strong> ${data.theme}</p>
+        <h2>${menu.main}</h2>
+        <p><strong>Theme:</strong> ${menu.theme}</p>
         <p><strong>Appetizers:</strong></p>
-        <ul>
-          ${data.appetizers.map(item => `<li><a href="${item.url}" target="_blank">${item.name}</a></li>`).join('')}
-        </ul>
+        <ul>${menu.appetizers.map(item => `<li>${item}</li>`).join('')}</ul>
         <p><strong>Sides:</strong></p>
-        <ul>
-          ${data.sides.map(item => `<li><a href="${item.url}" target="_blank">${item.name}</a></li>`).join('')}
-        </ul>
-        <p><strong>Wine Pairing:</strong> ${data.wine}</p>
-        <p><strong>Cocktail Pairing:</strong> ${data.cocktail}</p>
-        <p><strong>Dessert:</strong> <a href="${data.dessert.url}" target="_blank">${data.dessert.name}</a></p>
-        <p><strong>Playlist Vibe:</strong> ${data.playlist.name} — Song: "${data.playlist.song}"</p>
-        <p><strong>Icebreaker Question:</strong> ${data.icebreaker}</p>
+        <ul>${menu.sides.map(item => `<li>${item}</li>`).join('')}</ul>
+        <p><strong>Wine:</strong> ${menu.wine}</p>
+        <p><strong>Cocktail:</strong> ${menu.cocktail}</p>
+        <p><strong>Dessert:</strong> ${menu.dessert}</p>
+        <p><strong>Playlist:</strong> ${menu.playlist} <em>– play "${menu.song}"</em></p>
+        <p><strong>Icebreaker:</strong> ${menu.icebreaker}</p>
         <div class="pdf-link">
-          <a href="${data.pdf}" target="_blank">📄 Download Printable Menu</a>
+          <a href="${menu.pdf}" target="_blank">📄 Download Printable Menu</a>
         </div>
         <div class="try-again">
           <button onclick="generateMenu()">Try Again</button>
