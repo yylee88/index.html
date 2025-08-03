@@ -114,69 +114,52 @@
   </footer>
 
   <script>
-    const menus = [
-      {
-        main: "Whole Cambodian-style fish with lemongrass & lime",
-        appetizers: ["Cured radish with chili oil drizzle", "Charred okra skewers with smoked salt"],
-        sides: ["Sticky coconut rice", "Pickled papaya & shallot salad"],
-        wine: "Skin-contact Riesling from Finger Lakes",
-        cocktail: "Makrut gimlet on crushed ice",
-        dessert: "Salted palm sugar flan",
-        theme: "Back-alley market meets art gallery",
-        playlist: "Obscure disco edits from São Paulo + a rogue Addison Rae track",
-        song: "Do You Wanna Funk – Sylvester",
-        icebreaker: "What’s the weirdest meal you’ve ever loved more than you expected?",
-        pdf: "https://example.com/menu-cambodian-fish.pdf"
-      },
-      {
-        main: "Crispy smashed fingerlings with chili crisp & labneh",
-        appetizers: ["Marinated Castelvetrano olives with fennel pollen", "Spoonfuls of lemony whipped ricotta"],
-        sides: ["Charred cabbage with anchovy vinaigrette", "Crunchy Persian cucumber salad"],
-        wine: "Chilled red from Sicily",
-        cocktail: "Shiso mezcal sour",
-        dessert: "Burnt honey semifreddo",
-        theme: "Natural wine & no shoes",
-        playlist: "Japanese city pop and minimal techno",
-        song: "Plastic Love – Mariya Takeuchi",
-        icebreaker: "What’s one food hill you’d die on (like cilantro is trash)?",
-        pdf: "https://example.com/menu-smashed-fingerlings.pdf"
-      },
-      {
-        main: "Korean soy-braised short ribs (galbi jjim)",
-        appetizers: ["Shredded scallion pancakes", "Soy-pickled quail eggs"],
-        sides: ["Jujube & daikon broth", "Charred shishitos with sesame oil"],
-        wine: "Light Burgundy or Lambrusco",
-        cocktail: "Black sesame old fashioned",
-        dessert: "Hojicha panna cotta",
-        theme: "Concrete floors, warm light, someone brought incense",
-        playlist: "K-indie deep cuts meets '90s house",
-        song: "Everybody Be Somebody – Ruffneck",
-        icebreaker: "If your soul had a signature dish, what would it be?",
-        pdf: "https://example.com/menu-galbi.pdf"
-      }
-    ];
-
     function generateMenu() {
       const input = document.getElementById("mainDish").value.trim();
       const container = document.getElementById("menu");
       container.innerHTML = "";
 
-      const menu = menus[Math.floor(Math.random() * menus.length)];
+      if (!input) return;
+
+      const menu = {
+        main: input,
+        mainLink: "https://www.google.com/search?q=" + encodeURIComponent(input + " recipe"),
+        appetizers: [
+          { name: "Pickled turnips with mustard seed", url: "https://www.seriouseats.com/pickled-turnips-recipe" },
+          { name: "Crispy shallots on labneh", url: "https://www.bonappetit.com/recipe/labneh-with-quick-pickles-and-crispy-shallots" }
+        ],
+        sides: [
+          { name: "Spiced lentils with preserved lemon", url: "https://www.nytimes.com/recipe/1021980/spiced-lentils" },
+          { name: "Charred broccolini with anchovy oil", url: "https://www.epicurious.com/recipes/food/views/charred-broccolini-with-anchovy-dressing" }
+        ],
+        wine: "A chilled Gamay with high acid",
+        cocktail: "Basil-cilantro mezcal margarita",
+        dessert: { name: "Olive oil cake with fennel pollen", url: "https://www.loveandlemons.com/olive-oil-cake/" },
+        theme: "Studio dinner in a converted print shop",
+        song: "Fade to Grey – Visage",
+        songLink: "https://open.spotify.com/track/4tkgz64N2fddIsCgd5Z0us",
+        icebreaker: "What food trend would you bring back or cancel forever?",
+        pdf: "https://example.com/menu-curated.pdf"
+      };
 
       const section = document.createElement("div");
       section.className = "menu-output";
 
       section.innerHTML = `
-        <h2>${menu.main}</h2>
+        <h2><a href="${menu.mainLink}" target="_blank">${menu.main}</a></h2>
         <p><strong>Theme:</strong> ${menu.theme}</p>
         <p><strong>Appetizers:</strong></p>
-        <ul>${menu.appetizers.map(item => `<li>${item}</li>`).join('')}</ul>
+        <ul>
+          ${menu.appetizers.map(item => `<li><a href="${item.url}" target="_blank">${item.name}</a></li>`).join('')}
+        </ul>
         <p><strong>Sides:</strong></p>
-        <ul>${menu.sides.map(item => `<li>${item}</li>`).join('')}</ul>
+        <ul>
+          ${menu.sides.map(item => `<li><a href="${item.url}" target="_blank">${item.name}</a></li>`).join('')}
+        </ul>
         <p><strong>Wine:</strong> ${menu.wine}</p>
         <p><strong>Cocktail:</strong> ${menu.cocktail}</p>
-        <p><strong>Dessert:</strong> ${menu.dessert}</p>
-        <p><strong>Playlist:</strong> ${menu.playlist} <em>– play "${menu.song}"</em></p>
+        <p><strong>Dessert:</strong> <a href="${menu.dessert.url}" target="_blank">${menu.dessert.name}</a></p>
+        <p><strong>Song Pairing:</strong> <a href="${menu.songLink}" target="_blank">${menu.song}</a></p>
         <p><strong>Icebreaker:</strong> ${menu.icebreaker}</p>
         <div class="pdf-link">
           <a href="${menu.pdf}" target="_blank">📄 Download Printable Menu</a>
