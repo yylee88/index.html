@@ -1,4 +1,3 @@
-# index.html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -69,12 +68,6 @@
       font-size: 0.9rem;
       color: #aaa;
     }
-    .menu-image {
-      width: 100%;
-      height: auto;
-      margin: 1rem 0;
-      border-radius: 8px;
-    }
     .try-again {
       text-align: center;
       margin-top: 1rem;
@@ -90,7 +83,7 @@
   <div class="container">
     <div class="input-area">
       <label for="mainDish">What are you making (or craving)?</label><br>
-      <input type="text" id="mainDish" placeholder="e.g. Lasagna, Eggplant, Date Night" />
+      <input type="text" id="mainDish" placeholder="e.g. Lasagna, Chicken Parmesan, Tofu Stir Fry" />
       <br>
       <button onclick="generateMenus()">Generate My Menus</button>
     </div>
@@ -103,68 +96,50 @@
   </footer>
 
   <script>
-    const themes = ["Golden Hour Cozy", "Crunch + Chaos", "Late Night Picnic"];
-    const menusData = [
-      {
-        sides: [
-          { name: "Lemony Green Beans", url: "https://www.seriouseats.com/lemony-green-beans-recipe" },
-          { name: "Garlic Roasted Potatoes", url: "https://www.bonappetit.com/recipe/extra-crispy-roast-potatoes" }
-        ],
-        drink: "Chilled Beaujolais",
-        vibe: "Candlelight and jazz",
-        extra: "Serve on mismatched plates",
-        image: "https://source.unsplash.com/800x400/?dinner-party"
-      },
-      {
-        sides: [
-          { name: "Kimchi Slaw", url: "https://www.thekitchn.com/kimchi-slaw-recipe-22946284" },
-          { name: "Scallion Pancakes", url: "https://www.seriouseats.com/scallion-pancakes-recipe" }
-        ],
-        drink: "Soju Spritzer",
-        vibe: "K-pop and fairy lights",
-        extra: "Play a toast game",
-        image: "https://source.unsplash.com/800x400/?korean-food"
-      },
-      {
-        sides: [
-          { name: "Tomato Salad with Feta", url: "https://www.bbcgoodfood.com/recipes/tomato-salad-feta" },
-          { name: "Grilled Corn on the Cob", url: "https://www.nytimes.com/recipe/1023252/grilled-corn-on-the-cob" }
-        ],
-        drink: "Sparkling Apple Cider",
-        vibe: "Outdoor with string lights",
-        extra: "Napkins folded like animals",
-        image: "https://source.unsplash.com/800x400/?picnic-food"
-      }
-    ];
+    const menuSuggestions = {
+      "lasagna": [
+        { name: "Garlic Bread", url: "https://www.allrecipes.com/recipe/21060/toasted-garlic-bread/" },
+        { name: "Caesar Salad", url: "https://www.allrecipes.com/recipe/229063/classic-restaurant-caesar-salad/" }
+      ],
+      "chicken parmesan": [
+        { name: "Spaghetti Aglio e Olio", url: "https://www.allrecipes.com/recipe/222000/spaghetti-aglio-e-olio/" },
+        { name: "Italian Roasted Vegetables", url: "https://www.allrecipes.com/recipe/214931/roasted-vegetables/" }
+      ],
+      "tofu stir fry": [
+        { name: "Steamed Jasmine Rice", url: "https://www.allrecipes.com/recipe/262856/jasmine-rice/" },
+        { name: "Asian Cucumber Salad", url: "https://www.allrecipes.com/recipe/222106/asian-cucumber-salad/" }
+      ],
+      "default": [
+        { name: "Simple Green Salad", url: "https://www.allrecipes.com/recipe/14469/jamies-cranberry-spinach-salad/" },
+        { name: "Roasted Potatoes", url: "https://www.allrecipes.com/recipe/220520/roasted-red-potatoes/" }
+      ]
+    };
 
     function generateMenus() {
-      const dish = document.getElementById('mainDish').value.trim() || "Mystery Dish";
-      const container = document.getElementById('menus');
-      container.innerHTML = '';
+      const input = document.getElementById("mainDish").value.trim().toLowerCase();
+      const container = document.getElementById("menus");
+      container.innerHTML = "";
 
-      menusData.forEach((menu, index) => {
-        const section = document.createElement('div');
-        section.className = 'menu-output';
+      let suggestions = menuSuggestions[input] || menuSuggestions["default"];
+
+      for (let i = 0; i < 3; i++) {
+        const section = document.createElement("div");
+        section.className = "menu-output";
 
         section.innerHTML = `
-          <h2>🍽️ Menu Option ${index + 1}</h2>
-          <img src="${menu.image}" alt="Menu image" class="menu-image" />
-          <p><strong>Main Dish:</strong> ${dish}</p>
-          <p><strong>Theme:</strong> ${themes[index]}</p>
-          <p><strong>Sides:</strong></p>
+          <h2>🍽️ Menu Option ${i + 1}</h2>
+          <p><strong>Main Dish:</strong> ${input || "Mystery Dish"}</p>
+          <p><strong>Suggested Sides:</strong></p>
           <ul>
-            ${menu.sides.map(side => `<li><a href="${side.url}" target="_blank">${side.name}</a></li>`).join('')}
+            ${suggestions.map(side => `<li><a href="${side.url}" target="_blank">${side.name}</a></li>`).join("")}
           </ul>
-          <p><strong>Drink:</strong> ${menu.drink}</p>
-          <p><strong>Vibe:</strong> ${menu.vibe}</p>
-          <p><strong>Extra Touch:</strong> ${menu.extra}</p>
           <div class="try-again">
             <button onclick="generateMenus()">Try Again</button>
           </div>
         `;
 
         container.appendChild(section);
-      });
+      }
     }
   </script>
 </body>
