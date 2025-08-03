@@ -7,10 +7,10 @@
   <title>Gourmeet | Menu Pairing Made Simple</title>
   <style>
     body {
-      font-family: 'Helvetica Neue', sans-serif;
+      font-family: 'Helvetica', sans-serif;
       margin: 0;
       padding: 0;
-      background: #f9f5f0;
+      background: #fefefe;
       color: #333;
     }
     header {
@@ -28,7 +28,7 @@
       color: #666;
     }
     .container {
-      max-width: 700px;
+      max-width: 900px;
       margin: 2rem auto;
       padding: 1rem;
     }
@@ -58,6 +58,7 @@
       border-radius: 8px;
       padding: 1.5rem;
       box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      margin-bottom: 2rem;
     }
     .menu-output h2 {
       margin-top: 0;
@@ -67,6 +68,16 @@
       padding: 2rem;
       font-size: 0.9rem;
       color: #aaa;
+    }
+    .menu-image {
+      width: 100%;
+      height: auto;
+      margin: 1rem 0;
+      border-radius: 8px;
+    }
+    .try-again {
+      text-align: center;
+      margin-top: 1rem;
     }
   </style>
 </head>
@@ -81,19 +92,10 @@
       <label for="mainDish">What are you making (or craving)?</label><br>
       <input type="text" id="mainDish" placeholder="e.g. Lasagna, Eggplant, Date Night" />
       <br>
-      <button onclick="generateMenu()">Generate My Menu</button>
+      <button onclick="generateMenus()">Generate My Menus</button>
     </div>
 
-    <div class="menu-output" id="output" style="display: none">
-      <h2>🍽️ Your Gourmeet Menu</h2>
-      <p><strong>Main Dish:</strong> <span id="dishName"></span></p>
-      <p><strong>Theme:</strong> <span id="theme"></span></p>
-      <p><strong>Sides:</strong></p>
-      <ul id="sides"></ul>
-      <p><strong>Drink:</strong> <span id="drink"></span></p>
-      <p><strong>Vibe:</strong> <span id="vibe"></span></p>
-      <p><strong>Extra Touch:</strong> <span id="extra"></span></p>
-    </div>
+    <div id="menus"></div>
   </div>
 
   <footer>
@@ -101,39 +103,68 @@
   </footer>
 
   <script>
-    function generateMenu() {
-      const dish = document.getElementById('mainDish').value.trim();
-      const output = document.getElementById('output');
-      const themes = ["Golden Hour Cozy", "Crunch + Chaos", "Quiet Luxury", "Late Night Picnic", "Global Grandma"];
-      const sidesSets = [
-        ["Lemony green beans", "Garlic roasted potatoes"],
-        ["Kimchi slaw", "Scallion pancakes"],
-        ["Pear & arugula salad", "Baguette with whipped butter"],
-        ["Pickled cucumbers", "Sesame soba noodles"],
-        ["Roasted squash", "Butter-glazed carrots"]
-      ];
-      const drinks = ["Chilled Beaujolais", "Soju spritzer", "Lemon spritz", "Spiced red wine sangria", "Sparkling apple cider"];
-      const vibes = ["Candlelight and jazz", "K-pop and fairy lights", "Dinner on the floor", "Old records and warm lighting", "Outdoor with string lights"];
-      const extras = ["Serve on mismatched plates", "Napkins folded like animals", "Tiny handwritten menus", "Play a toast game", "Dessert served in mugs"];
+    const themes = ["Golden Hour Cozy", "Crunch + Chaos", "Late Night Picnic"];
+    const menusData = [
+      {
+        sides: [
+          { name: "Lemony Green Beans", url: "https://www.seriouseats.com/lemony-green-beans-recipe" },
+          { name: "Garlic Roasted Potatoes", url: "https://www.bonappetit.com/recipe/extra-crispy-roast-potatoes" }
+        ],
+        drink: "Chilled Beaujolais",
+        vibe: "Candlelight and jazz",
+        extra: "Serve on mismatched plates",
+        image: "https://source.unsplash.com/800x400/?dinner-party"
+      },
+      {
+        sides: [
+          { name: "Kimchi Slaw", url: "https://www.thekitchn.com/kimchi-slaw-recipe-22946284" },
+          { name: "Scallion Pancakes", url: "https://www.seriouseats.com/scallion-pancakes-recipe" }
+        ],
+        drink: "Soju Spritzer",
+        vibe: "K-pop and fairy lights",
+        extra: "Play a toast game",
+        image: "https://source.unsplash.com/800x400/?korean-food"
+      },
+      {
+        sides: [
+          { name: "Tomato Salad with Feta", url: "https://www.bbcgoodfood.com/recipes/tomato-salad-feta" },
+          { name: "Grilled Corn on the Cob", url: "https://www.nytimes.com/recipe/1023252/grilled-corn-on-the-cob" }
+        ],
+        drink: "Sparkling Apple Cider",
+        vibe: "Outdoor with string lights",
+        extra: "Napkins folded like animals",
+        image: "https://source.unsplash.com/800x400/?picnic-food"
+      }
+    ];
 
-      const randomIndex = Math.floor(Math.random() * themes.length);
+    function generateMenus() {
+      const dish = document.getElementById('mainDish').value.trim() || "Mystery Dish";
+      const container = document.getElementById('menus');
+      container.innerHTML = '';
 
-      document.getElementById('dishName').innerText = dish || "Mystery Dish";
-      document.getElementById('theme').innerText = themes[randomIndex];
+      menusData.forEach((menu, index) => {
+        const section = document.createElement('div');
+        section.className = 'menu-output';
 
-      const sides = document.getElementById('sides');
-      sides.innerHTML = '';
-      sidesSets[randomIndex].forEach(side => {
-        const li = document.createElement('li');
-        li.innerText = side;
-        sides.appendChild(li);
+        section.innerHTML = `
+          <h2>🍽️ Menu Option ${index + 1}</h2>
+          <img src="${menu.image}" alt="Menu image" class="menu-image" />
+          <p><strong>Main Dish:</strong> ${dish}</p>
+          <p><strong>Theme:</strong> ${themes[index]}</p>
+          <p><strong>Sides:</strong></p>
+          <ul>
+            ${menu.sides.map(side => `<li><a href="${side.url}" target="_blank">${side.name}</a></li>`).join('')}
+          </ul>
+          <p><strong>Drink:</strong> ${menu.drink}</p>
+          <p><strong>Vibe:</strong> ${menu.vibe}</p>
+          <p><strong>Extra Touch:</strong> ${menu.extra}</p>
+          <div class="try-again">
+            <button onclick="generateMenus()">Try Again</button>
+          </div>
+        `;
+
+        container.appendChild(section);
       });
-
-      document.getElementById('drink').innerText = drinks[randomIndex];
-      document.getElementById('vibe').innerText = vibes[randomIndex];
-      document.getElementById('extra').innerText = extras[randomIndex];
-
-      output.style.display = 'block';
     }
   </script>
 </body>
